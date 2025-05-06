@@ -5,10 +5,11 @@ from projectile import Projectile
 from config import (
     TOWER_LIST, WIDTH, HEIGHT, FPS,
     BG_COLOR,
-    TOWER_TYPES, COZY_TYPES, WAVES,
+    TOWER_TYPES, COZY_TYPES,
     path
 )
 from boss_cozy import BossCozy
+from collections import deque
 
 # Initialize pygame
 pygame.init()
@@ -42,6 +43,7 @@ game_state = "menu"
 wave = 1
 wave_in_progress = False
 wave_timer = 0
+cozy_queue = deque() 
 cozies_to_spawn = 0
 cozy_spawn_times = []
 spawn_index = 0
@@ -56,7 +58,7 @@ projectiles = []
 undo_stack = []
 redo_stack = []
 
-player_health = 5
+player_health = 10
 coins = 100
 coins_per_kill = 10
 font = pygame.font.SysFont("arial", 24)
@@ -68,18 +70,35 @@ undo_button_rect = pygame.Rect(WIDTH - 200, 10, 80, 30)
 redo_button_rect = pygame.Rect(WIDTH - 110, 10, 80, 30)
 
 def start_wave(n_wave):
-    global wave_in_progress, wave_timer, cozies_to_spawn
-    global cozy_spawn_times, spawn_index, cozy_timer
+    global wave_in_progress, wave_timer, cozy_queue, cozy_spawn_timer
     global wave_message_timer, wave_message_text
 
     wave_in_progress = True
     wave_timer = 0
-    cozies_to_spawn = 5 + (n_wave - 1) * 2
-    cozy_spawn_times = [i * 40 for i in range(cozies_to_spawn)]
-    spawn_index = 0
-    cozy_timer = 0
+    cozy_queue.clear()
+    cozy_spawn_timer = 0
     wave_message_text = f"Wave {n_wave}!"
     wave_message_timer = wave_message_duration
+
+    total_cozies = 5 + (n_wave - 1) * 2
+
+    for _ in range(total_cozies):
+        cozy = Cozy(path)
+        cozy.health += 40 * (n_wave - 1)
+        cozy.max_health = cozy.health  # para la barra verde
+        cozy_queue.append(cozy)
+
+
+    # Agregar un BossCozy cada 3 oleadas
+    if n_wave % 3 == 0:
+        boss = BossCozy(path)
+        incremento = 40 * ((n_wave // 3) - 1)
+        boss.health += incremento
+        boss.max_health = boss.health
+        cozy_queue.append(boss)
+
+
+
 
 def show_start_menu(screen):
     title_font = pygame.font.SysFont("arial", 48)
@@ -231,18 +250,16 @@ while running:
             start_wave(wave)
 
         if wave_in_progress:
-            cozy_timer += 1
-            if spawn_index < len(cozy_spawn_times):
-                if cozy_timer >= cozy_spawn_times[spawn_index]:
-                    cozies.append(Cozy(path))
-                    spawn_index += 1
-            else:
-                if wave == 5 and not boss_spawned:
-                    cozies.append(BossCozy(path))
-                    boss_spawned = True
-                elif len(cozies) == 0:
-                    wave_in_progress = False
-                    boss_spawned = False
+            cozy_spawn_timer += 1
+        if cozy_spawn_timer >= 40 and cozy_queue:
+            cozies.append(cozy_queue.popleft())
+            cozy_spawn_timer = 0
+
+        if not cozy_queue and not cozies:
+            wave_in_progress = False
+
+
+
 
         for cozy in cozies[:]:
             reached_end = cozy.move()

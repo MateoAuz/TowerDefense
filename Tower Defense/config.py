@@ -40,7 +40,7 @@ path = [
 TOWER_TYPES = {
     "basic": {
         "color": (50, 150, 255),  # Azul
-        "damage": 25,
+        "damage": 15,
         "range": 150,
         "cooldown": 60,
         "cost": 50,
@@ -48,15 +48,15 @@ TOWER_TYPES = {
     },
     "sniper": {
         "color": (100, 255, 100),  # Verde
-        "damage": 60,
+        "damage": 50,
         "range": 250,
         "cooldown": 90,
-        "cost": 80,
+        "cost": 100,
         "image": "images/towers/torreMedia.png"
     },
     "rapid": {
         "color": (255, 100, 100),  # Roja
-        "damage": 10,
+        "damage": 5,
         "range": 120,
         "cooldown": 15,
         "cost": 60,
