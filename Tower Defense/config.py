@@ -38,10 +38,32 @@ path = [
 ]
 
 TOWER_TYPES = {
-    "basic": {"color": (50, 150, 255), "damage": 25, "range": 150, "cooldown": 60, "cost": 50},
-    "sniper": {"color": (100, 255, 100), "damage": 60, "range": 250, "cooldown": 90, "cost": 80},
-    "rapid": {"color": (255, 100, 100), "damage": 10, "range": 120, "cooldown": 15, "cost": 60}
+    "basic": {
+        "color": (50, 150, 255),  # Azul
+        "damage": 25,
+        "range": 150,
+        "cooldown": 60,
+        "cost": 50,
+        "image": "images/towers/torreBase.png"
+    },
+    "sniper": {
+        "color": (100, 255, 100),  # Verde
+        "damage": 60,
+        "range": 250,
+        "cooldown": 90,
+        "cost": 80,
+        "image": "images/towers/torreMedia.png"
+    },
+    "rapid": {
+        "color": (255, 100, 100),  # Roja
+        "damage": 10,
+        "range": 120,
+        "cooldown": 15,
+        "cost": 60,
+        "image": "images/towers/torreRapida.png"
+    }
 }
+
 
 TOWER_LIST = ["basic", "sniper", "rapid"]
 
