@@ -3,7 +3,7 @@ from cozy import Cozy
 from tower import Tower
 from projectile import Projectile
 from config import (
-    WIDTH, HEIGHT, FPS,
+    TOWER_LIST, WIDTH, HEIGHT, FPS,
     BG_COLOR, PATH_COLOR,
     TOWER_TYPES, COZY_TYPES, WAVES,
     path
@@ -93,6 +93,46 @@ def is_on_path(x, y, path, tolerance=30):
             return True
     return False
 
+def draw_tower_selection(screen, selected_type):
+    # Crear un panel en la parte inferior de la pantalla
+    panel_rect = pygame.Rect(60, HEIGHT - 110, 300, 100)
+    
+    # Dibujar el panel con un fondo semitransparente
+    pygame.draw.rect(screen, (128,128,128), panel_rect)
+    
+    # Título
+    title_font = pygame.font.SysFont("Old English Text MT", 22)
+    title = title_font.render("Selección de Torres", True, (255, 255, 255))
+    screen.blit(title, (panel_rect.x + panel_rect.width//2 - title.get_width()//2, panel_rect.y + 10))
+    
+    # Dibujar cada opción de torre con atajo de teclado
+    tower_font = pygame.font.SysFont("arial", 16)
+    
+    # Espaciar torres uniformemente - aumentar el espaciado
+    spacing = 90
+    
+    for i, tower_type in enumerate(TOWER_LIST):
+        # Centrar las torres horizontalmente en el panel
+        tower_x = panel_rect.x + 50 + (i * spacing)
+        tower_y = panel_rect.y + 50
+        
+        # Dibujar círculo de torre
+        tower_color = TOWER_TYPES[tower_type]["color"]
+        pygame.draw.circle(screen, tower_color, (tower_x, tower_y), 15)
+        
+        # Dibujar indicador de selección si está seleccionada
+        if tower_type == selected_type:
+            pygame.draw.circle(screen, (255, 255, 255), (tower_x, tower_y), 18, 2)
+        
+        # Dibujar número de tecla - ahora por encima del círculo
+        key_text = tower_font.render(f"{i+1}", True, (255, 255, 0))
+        screen.blit(key_text, (tower_x - 5, tower_y + 25))
+        
+        # Dibujar costo de la torre - ahora a la derecha del círculo
+        cost_text = tower_font.render(f"${TOWER_TYPES[tower_type]['cost']}", True, (255, 255, 255))
+        screen.blit(cost_text, (tower_x + 25, tower_y - 5))
+        
+        
 def show_game_over(screen):
     game_over_font = pygame.font.SysFont("arial", 64)
     text = game_over_font.render("GAME OVER!", True, (255, 0, 0))
@@ -253,6 +293,8 @@ while running:
 
         pygame.draw.circle(screen, preview_color, (mouse_x, mouse_y), 20, 2)
         pygame.draw.circle(screen, (100, 100, 100), (mouse_x, mouse_y), tower_range, 1)
+        draw_tower_selection(screen, selected_tower_type)
+
 
     elif game_state == "game_over":
         show_game_over(screen)
