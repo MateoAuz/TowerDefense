@@ -16,6 +16,14 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Tower Defense")
 clock = pygame.time.Clock()
 
+# Cargar imágenes de torres para el menú de selección
+tower_selection_images = {
+    "basic": pygame.transform.scale(pygame.image.load("images/towers/torreBase.png"), (40, 40)),
+    "sniper": pygame.transform.scale(pygame.image.load("images/towers/torreMedia.png"), (40, 40)),
+    "rapid": pygame.transform.scale(pygame.image.load("images/towers/torreRapida.png"), (40, 40))
+}
+
+
 # Load background image
 background_img = pygame.image.load("images/snow_forest_background.png")  # renamed your uploaded image to this
 background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
@@ -118,7 +126,8 @@ def draw_tower_selection(screen, selected_type):
         
         # Dibujar círculo de torre
         tower_color = TOWER_TYPES[tower_type]["color"]
-        pygame.draw.circle(screen, tower_color, (tower_x, tower_y), 15)
+        img = tower_selection_images[tower_type]
+        screen.blit(img, (tower_x - 20, tower_y - 20))  # Centrado para imágenes de 40x40
         
         # Dibujar indicador de selección si está seleccionada
         if tower_type == selected_type:
