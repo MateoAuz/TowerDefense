@@ -8,7 +8,6 @@ BG_COLOR = (30, 30, 30)
 COZY_COLOR = (200, 50, 50)
 TOWER_COLOR = (50, 150, 255)
 PROJECTILE_COLOR = (0, 0, 0)
-PATH_COLOR = (255, 255, 255)  # white, o el color que prefieras
 
 
 

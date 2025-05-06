@@ -4,7 +4,7 @@ from tower import Tower
 from projectile import Projectile
 from config import (
     TOWER_LIST, WIDTH, HEIGHT, FPS,
-    BG_COLOR, PATH_COLOR,
+    BG_COLOR,
     TOWER_TYPES, COZY_TYPES, WAVES,
     path
 )
@@ -208,9 +208,6 @@ while running:
 
     elif game_state == "playing":
         screen.blit(background_img, (0, 0))
-
-        for i in range(len(path) - 1):
-            pygame.draw.line(screen, PATH_COLOR, path[i], path[i + 1], 40)
 
         if not wave_in_progress and len(cozies) == 0:
             wave += 1
