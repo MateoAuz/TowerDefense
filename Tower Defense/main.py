@@ -23,6 +23,13 @@ tower_selection_images = {
     "rapid": pygame.transform.scale(pygame.image.load("images/towers/torreRapida.png"), (40, 40))
 }
 
+pygame.mixer.init()
+game_over_sound = pygame.mixer.Sound("assets/game_over.mp3")
+pygame.mixer.music.load("assets/marcha_imperial.mp3")
+pygame.mixer.music.set_volume(1.0)  # Volumen (0.0 a 1.0)
+pygame.mixer.music.play(-1)  # Repetir infinito
+
+
 
 # Load background image
 background_img = pygame.image.load("images/snow_forest_background.png")  # renamed your uploaded image to this
@@ -148,6 +155,7 @@ def show_game_over(screen):
     screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 - text.get_height() // 2))
     pygame.display.flip()
     pygame.time.delay(3000)
+    
 
 # Main loop
 running = True
@@ -303,8 +311,12 @@ while running:
 
 
     elif game_state == "game_over":
+        pygame.mixer.music.stop()           # Detener música de fondo
+        game_over_sound.play()              # Reproducir sonido de derrota
         show_game_over(screen)
+        pygame.time.delay(2000)             # Espera opcional para que suene completo
         running = False
+
 
     pygame.display.flip()
 
