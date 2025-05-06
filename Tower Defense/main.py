@@ -26,15 +26,15 @@ tower_selection_images = {
 
 pygame.mixer.init()
 game_over_sound = pygame.mixer.Sound("assets/game_over.mp3")
+game_over_sound.set_volume(0.3)
 pygame.mixer.music.load("assets/marcha_imperial.mp3")
-pygame.mixer.music.set_volume(1.0)  # Volumen (0.0 a 1.0)
-pygame.mixer.music.play(-1)  # Repetir infinito
-
-
+pygame.mixer.music.set_volume(0.7)  # Volumen (0.0 a 1.0)
 
 # Load background image
 background_img = pygame.image.load("images/snow_forest_background.png")  # renamed your uploaded image to this
 background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
+coin_img = pygame.transform.scale(pygame.image.load("images/coin.png"), (32, 32))
+
 
 # Game state
 game_state = "menu"
@@ -129,10 +129,11 @@ def is_on_path(x, y, path, tolerance=30):
 
 def draw_tower_selection(screen, selected_type):
     # Crear un panel en la parte inferior de la pantalla
-    panel_rect = pygame.Rect(60, HEIGHT - 110, 300, 100)
+    panel_rect = pygame.Rect(10, HEIGHT - 110, 300, 100)
     
     # Dibujar el panel con un fondo semitransparente
-    pygame.draw.rect(screen, (128,128,128), panel_rect)
+    pygame.draw.rect(screen, (40, 40, 80), panel_rect, border_radius=12)
+    pygame.draw.rect(screen, (100, 200, 255), panel_rect, 3, border_radius=12)
     
     # Título
     title_font = pygame.font.SysFont("Old English Text MT", 22)
@@ -157,7 +158,7 @@ def draw_tower_selection(screen, selected_type):
         
         # Dibujar indicador de selección si está seleccionada
         if tower_type == selected_type:
-            pygame.draw.circle(screen, (255, 255, 255), (tower_x, tower_y), 18, 2)
+            pygame.draw.circle(screen, (255, 0, 0), (tower_x, tower_y), 18, 2)
         
         # Dibujar número de tecla - ahora por encima del círculo
         key_text = tower_font.render(f"{i+1}", True, (255, 255, 0))
@@ -190,6 +191,8 @@ while running:
                 wave = 1
                 start_wave(wave)
                 game_state = "playing"
+                pygame.mixer.music.play(-1)  # Reproducir música al presionar ENTER
+
 
         elif game_state == "playing":
             if event.type == pygame.KEYDOWN:
@@ -289,8 +292,12 @@ while running:
         wave_text = font.render(f"Wave: {wave}", True, (30, 30, 30))
         screen.blit(wave_text, (10, 40))
 
-        coins_text = font.render(f"Coins: {coins}", True, (255, 255, 0))
-        screen.blit(coins_text, (10, 70))
+        # Dibujar imagen de la moneda
+        screen.blit(coin_img, (320, HEIGHT - 42))
+
+        # Dibujar texto al lado derecho de la imagen
+        coins_text = font.render(f"{coins}", True, (255, 255, 0))
+        screen.blit(coins_text, (360, HEIGHT - 35))
 
         pygame.draw.rect(screen, (200, 200, 200), undo_button_rect)
         undo_text = font.render("Undo", True, (0, 0, 0))
