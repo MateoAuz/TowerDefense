@@ -43,7 +43,7 @@ redo_stack = []
 
 player_health = 5
 coins = 100
-coins_per_kill = 25
+coins_per_kill = 10
 font = pygame.font.SysFont("arial", 24)
 selected_tower_type = "basic"
 boss_spawned = False
