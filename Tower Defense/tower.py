@@ -17,7 +17,9 @@ class Tower:
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (self.x, self.y), 20)
-        pygame.draw.circle(screen, (100, 100, 100), (self.x, self.y), self.range, 1)
+        def draw(self, screen):
+            pygame.draw.circle(screen, self.color, (self.x, self.y), 20)
+
 
     def shoot(self, enemies, projectiles):
         if self.counter > 0:
