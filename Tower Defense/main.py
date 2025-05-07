@@ -60,7 +60,8 @@ redo_stack = []
 
 player_health = 10
 coins = 100
-coins_per_kill = 10
+coins_per_kill = 20
+score = 0
 font = pygame.font.SysFont("arial", 24)
 selected_tower_type = "basic"
 boss_spawned = False
@@ -85,11 +86,11 @@ def start_wave(n_wave):
     for _ in range(total_cozies):
         cozy = Cozy(path)
         cozy.health += 40 * (n_wave - 1)
-        cozy.max_health = cozy.health  # para la barra verde
+        cozy.max_health = cozy.health  
         cozy_queue.append(cozy)
 
 
-    # Agregar un BossCozy cada 3 oleadas
+    3
     if n_wave % 3 == 0:
         boss = BossCozy(path)
         incremento = 40 * ((n_wave // 3) - 1)
@@ -274,6 +275,10 @@ while running:
 
         for cozy in cozies[:]:
             if cozy.health <= 0:
+                if isinstance(cozy, BossCozy):
+                    score += 3
+                else:
+                    score += 1
                 cozies.remove(cozy)
                 coins += coins_per_kill
 
@@ -290,6 +295,8 @@ while running:
         screen.blit(health_text, (10, 10))
 
         wave_text = font.render(f"Wave: {wave}", True, (30, 30, 30))
+        score_text = font.render(f"Score: {score}", True, (30, 30, 30))
+        screen.blit(score_text, (10, 70))
         screen.blit(wave_text, (10, 40))
 
         # Dibujar imagen de la moneda

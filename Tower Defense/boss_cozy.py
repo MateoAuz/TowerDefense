@@ -2,6 +2,7 @@ import pygame
 from collections import deque
 from config import *
 
+
 class BossCozy:
     def __init__(self, path):
         self.path_queue = deque(path)
