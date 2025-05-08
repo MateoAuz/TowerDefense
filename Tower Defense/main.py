@@ -11,13 +11,11 @@ from config import (
 from boss_cozy import BossCozy
 from collections import deque
 
-# Initialize pygame
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Tower Defense")
 clock = pygame.time.Clock()
 
-# Cargar imágenes de torres para el menú de selección
 tower_selection_images = {
     "basic": pygame.transform.scale(pygame.image.load("images/towers/torreBase.png"), (40, 40)),
     "sniper": pygame.transform.scale(pygame.image.load("images/towers/torreMedia.png"), (40, 40)),
@@ -28,18 +26,17 @@ pygame.mixer.init()
 game_over_sound = pygame.mixer.Sound("assets/game_over.mp3")
 game_over_sound.set_volume(0.3)
 pygame.mixer.music.load("assets/marcha_imperial.mp3")
-pygame.mixer.music.set_volume(0.7)  # Volumen (0.0 a 1.0)
+pygame.mixer.music.set_volume(0.7)  
 
-# Load background image
-background_img = pygame.image.load("images/snow_forest_background.png")  # renamed your uploaded image to this
+
+background_img = pygame.image.load("images/snow_forest_background.png")  
 background_img = pygame.transform.scale(background_img, (WIDTH, HEIGHT))
 coin_img = pygame.transform.scale(pygame.image.load("images/coin.png"), (32, 32))
 
 
-# Game state
 game_state = "menu"
 
-# Game variables
+
 wave = 1
 wave_in_progress = False
 wave_timer = 0
@@ -59,14 +56,14 @@ undo_stack = []
 redo_stack = []
 
 player_health = 10
-coins = 100
-coins_per_kill = 20
+coins = 200
+coins_per_kill = 50
 score = 0
 font = pygame.font.SysFont("arial", 24)
 selected_tower_type = "basic"
 boss_spawned = False
 
-# Button positions
+
 undo_button_rect = pygame.Rect(WIDTH - 200, 10, 80, 30)
 redo_button_rect = pygame.Rect(WIDTH - 110, 10, 80, 30)
 
@@ -90,15 +87,13 @@ def start_wave(n_wave):
         cozy_queue.append(cozy)
 
 
-    3
+    
     if n_wave % 3 == 0:
         boss = BossCozy(path)
         incremento = 40 * ((n_wave // 3) - 1)
         boss.health += incremento
         boss.max_health = boss.health
         cozy_queue.append(boss)
-
-
 
 
 def show_start_menu(screen):
@@ -129,46 +124,35 @@ def is_on_path(x, y, path, tolerance=30):
     return False
 
 def draw_tower_selection(screen, selected_type):
-    # Crear un panel en la parte inferior de la pantalla
     panel_rect = pygame.Rect(10, HEIGHT - 110, 300, 100)
     
-    # Dibujar el panel con un fondo semitransparente
     pygame.draw.rect(screen, (40, 40, 80), panel_rect, border_radius=12)
     pygame.draw.rect(screen, (100, 200, 255), panel_rect, 3, border_radius=12)
     
-    # Título
     title_font = pygame.font.SysFont("Old English Text MT", 22)
     title = title_font.render("Selección de Torres", True, (255, 255, 255))
     screen.blit(title, (panel_rect.x + panel_rect.width//2 - title.get_width()//2, panel_rect.y + 10))
     
-    # Dibujar cada opción de torre con atajo de teclado
     tower_font = pygame.font.SysFont("arial", 16)
     
-    # Espaciar torres uniformemente - aumentar el espaciado
     spacing = 90
     
     for i, tower_type in enumerate(TOWER_LIST):
-        # Centrar las torres horizontalmente en el panel
         tower_x = panel_rect.x + 50 + (i * spacing)
         tower_y = panel_rect.y + 50
         
-        # Dibujar círculo de torre
         tower_color = TOWER_TYPES[tower_type]["color"]
         img = tower_selection_images[tower_type]
-        screen.blit(img, (tower_x - 20, tower_y - 20))  # Centrado para imágenes de 40x40
+        screen.blit(img, (tower_x - 20, tower_y - 20))  
         
-        # Dibujar indicador de selección si está seleccionada
         if tower_type == selected_type:
             pygame.draw.circle(screen, (255, 0, 0), (tower_x, tower_y), 18, 2)
         
-        # Dibujar número de tecla - ahora por encima del círculo
         key_text = tower_font.render(f"{i+1}", True, (255, 255, 0))
         screen.blit(key_text, (tower_x - 5, tower_y + 25))
         
-        # Dibujar costo de la torre - ahora a la derecha del círculo
         cost_text = tower_font.render(f"${TOWER_TYPES[tower_type]['cost']}", True, (255, 255, 255))
         screen.blit(cost_text, (tower_x + 25, tower_y - 5))
-        
         
 def show_game_over(screen):
     game_over_font = pygame.font.SysFont("arial", 64)
@@ -178,7 +162,6 @@ def show_game_over(screen):
     pygame.time.delay(3000)
     
 
-# Main loop
 running = True
 while running:
     clock.tick(FPS)
@@ -192,7 +175,7 @@ while running:
                 wave = 1
                 start_wave(wave)
                 game_state = "playing"
-                pygame.mixer.music.play(-1)  # Reproducir música al presionar ENTER
+                pygame.mixer.music.play(-1) 
 
 
         elif game_state == "playing":
@@ -262,9 +245,6 @@ while running:
         if not cozy_queue and not cozies:
             wave_in_progress = False
 
-
-
-
         for cozy in cozies[:]:
             reached_end = cozy.move()
             if reached_end:
@@ -299,10 +279,8 @@ while running:
         screen.blit(score_text, (10, 70))
         screen.blit(wave_text, (10, 40))
 
-        # Dibujar imagen de la moneda
         screen.blit(coin_img, (320, HEIGHT - 42))
 
-        # Dibujar texto al lado derecho de la imagen
         coins_text = font.render(f"{coins}", True, (255, 255, 0))
         screen.blit(coins_text, (360, HEIGHT - 35))
 
@@ -342,10 +320,10 @@ while running:
 
 
     elif game_state == "game_over":
-        pygame.mixer.music.stop()           # Detener música de fondo
-        game_over_sound.play()              # Reproducir sonido de derrota
+        pygame.mixer.music.stop()           
+        game_over_sound.play()             
         show_game_over(screen)
-        pygame.time.delay(2000)             # Espera opcional para que suene completo
+        pygame.time.delay(2000)             
         running = False
 
 

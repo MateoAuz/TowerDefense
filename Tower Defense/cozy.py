@@ -10,18 +10,17 @@ class Cozy:
         self.health = 100
         self.max_health = 100
 
-        # Cargar frames de animación
         self.frames = [
             pygame.image.load(f"images/cozy_robot/frame_{i}.png").convert_alpha()
             for i in range(3)
         ]
         self.current_frame = 0
         self.animation_timer = 0
-        self.animation_speed = 10  # Velocidad del cambio de frame
+        self.animation_speed = 10  
 
     def move(self):
         if not self.target:
-            return True  # Llegó al final del camino
+            return True  
 
         dx = self.target[0] - self.x
         dy = self.target[1] - self.y
@@ -42,7 +41,7 @@ class Cozy:
         return False
 
     def draw(self, screen):
-        # Animar
+      
         self.animation_timer += 1
         if self.animation_timer >= self.animation_speed:
             self.animation_timer = 0

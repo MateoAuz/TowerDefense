@@ -20,14 +20,14 @@ class Tower:
         self.image = pygame.transform.scale(self.image, (40, 40))
 
     def draw(self, screen):
-        screen.blit(self.image, (self.x - 20, self.y - 20))  # Centrado
+        screen.blit(self.image, (self.x - 20, self.y - 20))  
 
 
-    def shoot(self, enemies, projectiles):
+    def shoot(self, cozies, projectiles):
         if self.counter > 0:
             self.counter -= 1
             return
-        for enemy in enemies:
+        for enemy in cozies:
             dx = enemy.x - self.x
             dy = enemy.y - self.y
             distance = (dx**2 + dy**2)**0.5

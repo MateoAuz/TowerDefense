@@ -8,14 +8,12 @@ class BossCozy:
         self.path_queue = deque(path)
         self.x, self.y = self.path_queue.popleft()
         self.target = self.path_queue.popleft() if self.path_queue else None
-        self.speed = 1  # Slower speed for a boss
+        self.speed = 1  
         self.health = 300
         self.max_health = 300
 
-        # Tamaño fijo del boss
         BOSS_SIZE = (60, 60)
         
-        #Cargar y escalar frames
         self.frames = [
             pygame.transform.scale(
                 pygame.image.load(f"images/boss_cozy/dark-f{i}.png").convert_alpha(),
@@ -26,11 +24,11 @@ class BossCozy:
         
         self.current_frame = 0
         self.animation_timer = 0
-        self.animation_speed = 10  # Menor número = animación más rápida
+        self.animation_speed = 10  
 
     def move(self):
         if not self.target:
-            return True  # Llegó al final del camino
+            return True  
 
         dx = self.target[0] - self.x
         dy = self.target[1] - self.y
@@ -51,7 +49,7 @@ class BossCozy:
         return False
 
     def draw(self, screen):
-        # Animar
+
         self.animation_timer += 1
         if self.animation_timer >= self.animation_speed:
             self.animation_timer = 0
@@ -61,12 +59,10 @@ class BossCozy:
         rect = img.get_rect(center=(int(self.x), int(self.y)))
         screen.blit(img, rect)
 
-        # Barra de vida
         pygame.draw.rect(screen, (255, 0, 0), (self.x - 25, self.y - 35, 50, 5))
         green_width = int(50 * self.health / self.max_health)
         pygame.draw.rect(screen, (0, 255, 0), (self.x - 25, self.y - 35, green_width, 5))
 
-        # Etiqueta "BOSS"
         font = pygame.font.SysFont("arial", 14)
         label = font.render("BOSS", True, (255, 255, 255))
         screen.blit(label, (self.x - label.get_width() // 2, self.y - 50))

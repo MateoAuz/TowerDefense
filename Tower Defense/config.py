@@ -10,14 +10,12 @@ TOWER_COLOR = (50, 150, 255)
 PROJECTILE_COLOR = (0, 0, 0)
 
 
-
-# List of cozy types by wave range
 COZY_TYPES = [
     {"class": Cozy, "from_wave": 1, "to_wave": 4},
     {"class": BossCozy, "from_wave": 5, "to_wave": 5}
 ]
 
-# List of wave definitions (sequential)
+
 WAVES = [
     {"cozy": 5},
     {"cozy": 7},
@@ -27,7 +25,6 @@ WAVES = [
 ]
 
 
-# Ruta que los enemigos seguirán (puedes cambiar los puntos)
 path = [
     (0, 100),
     (200, 100),
@@ -39,7 +36,7 @@ path = [
 
 TOWER_TYPES = {
     "basic": {
-        "color": (50, 150, 255),  # Azul
+        "color": (50, 150, 255),  
         "damage": 15,
         "range": 150,
         "cooldown": 60,
@@ -47,7 +44,7 @@ TOWER_TYPES = {
         "image": "images/towers/torreBase.png"
     },
     "sniper": {
-        "color": (100, 255, 100),  # Verde
+        "color": (100, 255, 100),  
         "damage": 50,
         "range": 250,
         "cooldown": 90,
@@ -55,7 +52,7 @@ TOWER_TYPES = {
         "image": "images/towers/torreMedia.png"
     },
     "rapid": {
-        "color": (255, 100, 100),  # Roja
+        "color": (255, 100, 100),  
         "damage": 5,
         "range": 120,
         "cooldown": 15,
