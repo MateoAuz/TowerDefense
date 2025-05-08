@@ -55,7 +55,7 @@ projectiles = []
 undo_stack = []
 redo_stack = []
 
-player_health = 10
+player_health = 100
 coins = 200
 coins_per_kill = 50
 score = 0

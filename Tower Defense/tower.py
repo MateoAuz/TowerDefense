@@ -27,12 +27,12 @@ class Tower:
         if self.counter > 0:
             self.counter -= 1
             return
-        for enemy in cozies:
-            dx = enemy.x - self.x
-            dy = enemy.y - self.y
+        for cozy in cozies:
+            dx = cozy.x - self.x
+            dy = cozy.y - self.y
             distance = (dx**2 + dy**2)**0.5
             if distance <= self.range:
-                projectiles.append(Projectile(self.x, self.y, enemy, self.damage))
+                projectiles.append(Projectile(self.x, self.y, cozy, self.damage))
                 self.counter = self.cooldown
                 break
 
