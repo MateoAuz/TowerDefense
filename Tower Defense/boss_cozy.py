@@ -8,9 +8,9 @@ class BossCozy:
         self.path_queue = deque(path)
         self.x, self.y = self.path_queue.popleft()
         self.target = self.path_queue.popleft() if self.path_queue else None
-        self.speed = 1  
+        self.speed = 20
         self.health = 300
-        self.max_health = 300
+        self.max_health = 100
 
         BOSS_SIZE = (60, 60)
         
